@@ -1,3 +1,5 @@
+// Attepmpt 1 
+
 public class Solution {
     public int[] TwoSum(int[] nums, int target) {
         for(int x = 0; x < nums.Length; x++)
@@ -11,5 +13,57 @@ public class Solution {
             } 
         }
         return null;
+    }
+}
+
+
+// Attempt 2 - using the Dictionary class as a hashmap, however FirstOrDefault() slowed application down to from 140ms to 300ms
+
+public class Solution {
+    public int[] TwoSum(int[] nums, int target) {
+        Dictionary<int, int> numMap = new Dictionary<int, int>();
+
+        for(int x = 0; x < nums.Length; x++)
+        {
+            if(numMap.ContainsValue(target - nums[x]))
+            {
+                KeyValuePair<int, int> pair = numMap.FirstOrDefault(num => num.Value == (target - nums[x]));
+                return [pair.Key, x];
+            }
+            else{
+                numMap.Add(x, nums[x]);
+            }
+        }
+        return null;
+    }
+}
+
+// Best Solution - Use a dictionary as a hashmap, but searches differently
+
+public class Solution {
+    public int[] TwoSum(int[] nums, int target) {
+        
+        var numMap = new Dictionary<int, int>();
+        var result = new int[2];
+
+        for (var i = 0; i < nums.Length; i ++) {
+            var rightNum = target - nums[i];
+
+    // if numMap does not contain key, adds itereable to Dictionary
+            if (!numMap.ContainsKey(rightNum)) {
+                numMap[nums[i]] = i;
+                rightNum = 0;
+            } 
+
+    // if numMap does have a matching value, grabs that value & current iterable & returns result
+            else {
+                result[0] = numMap[rightNum];
+                result[1] = i;
+                return result;
+            }
+        }
+
+        return result;
+
     }
 }
