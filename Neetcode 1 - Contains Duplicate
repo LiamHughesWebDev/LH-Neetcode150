@@ -1,0 +1,27 @@
+// Neetcode 1 - 217. Contains Duplicate
+
+//First attempt - passes 70 / 75 testcases but fails due to Time Limit with large data sets
+
+public class Solution {
+    public bool ContainsDuplicate(int[] nums) {
+        for (int a = 0; a < nums.Length; a++)
+        {
+            for (int b = 0; b < nums.Length; b++)
+            {
+                if(nums[a] == nums[b] && a != b){
+                    return true;
+                }
+            }    
+        }
+        return false;
+    }
+}
+
+// Best Solution I was able to learn from
+// Creates a HashSet (similar to an array, but refuses duplicates) and compares hashset Length to array Lenght
+
+public class Solution {
+    public bool ContainsDuplicate(int[] nums) {
+        return new HashSet<int>(nums).Count < nums.Length;  
+    }
+}
