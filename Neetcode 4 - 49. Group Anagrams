@@ -1,0 +1,96 @@
+// Attempt 1 - Solves the issue however is quite slow due to amount of loops
+
+public class Solution {
+    public IList<IList<string>> GroupAnagrams(string[] strs) {
+
+        Dictionary<int, string> strsDict = new Dictionary<int, string>();
+        Dictionary<string, int> anagramDict = new Dictionary<string, int>();
+        int anagramCounter = 0;
+
+        //iterate through strs array once
+        for (var i = 0; i < strs.Length; i++)
+        {
+            // turns string into char[] and sorts it alphabetically, then returns it to string. (ex. "eat" -> "aet") 
+            char[] strToSort = strs[i].ToCharArray();
+            Array.Sort(strToSort);
+            string sortedStr = String.Join("", strToSort);
+
+            // if strsDict does not contain a match, adds sortedStr to anagramDict
+            if(!strsDict.ContainsValue(sortedStr))
+            {  
+                anagramDict[sortedStr] = anagramCounter;
+                anagramCounter++;
+            }
+
+            // adds sortedStr to strsDict
+            strsDict[i] = sortedStr;
+        }
+
+        // declare answer using Dictionary length
+        string[][] answer = new string[anagramDict.Count][];
+
+        // with dictionaries set, I iterate through each unique anagram
+        foreach(KeyValuePair<string, int> pair in anagramDict)
+        {
+            // keeps track of how many matches & amount of matches
+            int counter = 0;
+            Dictionary<int, string> matches = new Dictionary<int, string>();
+
+            // iterates through full list of strings to check for matches
+            for(int x = 0; x < strsDict.Count; x++)
+            {                 
+
+                //if match is successful, adds match to matches dictionary
+                if(pair.Key == strsDict[x])
+                {
+                    counter++;
+                    matches.Add(counter, strs[x]);
+                }               
+            }
+            //convert matches dictionary to string[] & send to answser
+            foreach(KeyValuePair<int, string> set in matches)
+                {
+                    answer[pair.Value] = matches.Values.ToArray();
+                }
+        }
+        
+    return answer;
+    }
+}
+
+
+
+// Best solution -  Uses a List of strings in Dictionary which reduces complexity
+
+
+public class Solution {
+    public IList<IList<string>> GroupAnagrams(string[] strs) { 
+        IList<IList<string>> result = new List<IList<string>>();
+         Dictionary<string, List<string>> map = new Dictionary<string,List<string>>();
+
+         foreach(string str in strs){
+             char[] key = str.ToArray();
+             Array.Sort(key);
+             string keyFinal = new string(key);
+
+             if(map.ContainsKey(keyFinal)){
+                 var list = map[keyFinal];
+                 list.Add(str);
+
+                 map[keyFinal] = list;
+             } else{
+                 List<string> list  =new List<string>();
+                 list.Add(str);
+                 map[keyFinal] = list;
+             }
+
+         }
+
+         foreach(KeyValuePair<string, List<string>>  pair in map){
+            
+            result.Add(pair.Value);
+         }
+
+         return result;
+    }
+}
