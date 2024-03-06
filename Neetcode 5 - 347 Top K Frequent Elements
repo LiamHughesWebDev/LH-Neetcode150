@@ -1,0 +1,50 @@
+// Attempt 1 & Best Solution : )
+
+public class Solution {
+    public int[] TopKFrequent(int[] nums, int k) {
+        Dictionary<int, List<int>> map = new Dictionary<int, List<int>>();
+        int[] answer = new int[k];
+        int[] numberCounter = new int[k];
+
+
+        // loop through nums array and add values to dictionary (example  1: 1, 1, 1; 
+        //                                                                2: 2, 2; 
+        //                                                                3: 3;          )
+        foreach(int num in nums)
+        {
+            if(!map.ContainsKey(num))
+            {
+                List<int> list = new List<int>();
+                list.Add(num);
+                map[num] = list;
+            }
+            else
+            {
+                var list = map[num];
+                list.Add(num);
+
+                map[num] = list;
+            }
+        }
+
+        // loopssame through answer array and adds highest counting item
+        // removes highest counting item from dictionary for next pass
+        for(int i = 0; i < numberCounter.Length; i++)
+        {
+
+            foreach(KeyValuePair<int,List<int>> pair in map)
+            {
+
+                if(numberCounter[i] < pair.Value.Count)
+                {
+                    answer[i] = pair.Key;
+                    numberCounter[i] = pair.Value.Count;
+                }
+            }
+
+            map.Remove(answer[i]);
+        }
+        return answer;
+        
+    }
+}
