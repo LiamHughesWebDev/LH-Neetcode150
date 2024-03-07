@@ -1,4 +1,4 @@
-// Attempt 1 & Best Solution : )
+// Attempt 1 
 
 public class Solution {
     public int[] TopKFrequent(int[] nums, int k) {
@@ -47,4 +47,36 @@ public class Solution {
         return answer;
         
     }
+}
+
+
+// Best Solution - uses OrderByDescending Method to order dictionary and returns the first k values
+
+public class Solution {
+    public int[] TopKFrequent(int[] nums, int k)
+        {
+            int[] result = new int[k];
+            Dictionary<int, int> dic = new Dictionary<int, int>();
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (!dic.ContainsKey(nums[i]))
+                {
+                    dic.Add(nums[i], 1);
+                }
+                else
+                {
+                    dic[nums[i]]++;
+                }
+            }
+
+            var ordered = dic.OrderByDescending(x => x.Value).Take(k).ToList();
+
+            for (int i = 0; i < ordered.Count(); i++)
+            {
+                result[i] = ordered[i].Key;
+            }
+
+            return result;
+        }
 }
