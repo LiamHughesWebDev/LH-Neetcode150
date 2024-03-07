@@ -1,0 +1,57 @@
+// Attempt 1 - passed 18/22 tests. Failed tests returned "process exited with signal SIGABRT" 
+// likely due to overused memory?
+
+public class Solution {
+    public int[] ProductExceptSelf(int[] nums) {
+        Dictionary<int,List<int>> dict = new Dictionary<int,List<int>>();
+        int[] answer = new int[nums.Length];
+
+        for(int i = 0; i < nums.Length; i++)
+        {
+            List<int> list = new List<int>(nums);
+            dict.Add(i, list);
+            dict[i].Remove(nums[i]);
+        }
+
+
+ 
+
+        for(int i = 0; i < dict.Count; i++)
+        {
+           int prod = 1;
+            foreach (int value in dict[i])
+            {
+                prod *= value;
+                Console.WriteLine(prod);
+            }
+            answer[i] = prod;
+        }
+
+
+    return answer;   
+    }
+}
+
+// best solution - doesn't use a dictionary/hashmap, thus avoids SIGABRT error
+
+public class Solution {
+    public int[] ProductExceptSelf(int[] nums) {
+        			int[] answer = new int[nums.Length];
+			int left = 1, right = 1;
+
+			for(int i = 0; i < nums.Length; i++)
+			{
+				answer[i] = right;
+				right *= nums[i];
+			}
+
+			for(int i = nums.Length-1; i >= 0; i--)
+			{
+				answer[i] *= left;
+				left *= nums[i];
+			}
+
+			return answer;
+    }
+}
+
